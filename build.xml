@@ -51,9 +51,7 @@
 			</patternset>
 		</unzip>
 		
-		<copy todir="${build.pack.dir}/net/minecraft/server">
-			<fileset dir="lib/ModLoader.class"/>
-		</copy>
+		<copy file="lib/ModLoader.class" todir="${build.pack.dir}/net/minecraft/server"/>
 		
 		<copy todir="${build.pack.dir}">
 			<fileset dir="src">
@@ -62,6 +60,8 @@
 		</copy>
 		
 		<copy todir="${build.pack.dir}">
+			<fileset dir="${build.classes.dir}"/>
+		</copy>
   
         <jar jarfile="${target.dir}/mcpc-1.4.5-${build.version}.jar" manifest="${build.dir}/MANIFEST.MF">
 			<fileset dir="${build.pack.dir}" />
