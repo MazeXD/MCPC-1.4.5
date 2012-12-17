@@ -1,0 +1,74 @@
+<project name="MCPC-1.4.5" default="compile" basedir=".">
+    <property environment="env"/>
+	
+	<property name="build.version" value="dev-4.0"/>
+	
+    <property name="build.dir" location="${basedir}/build"/>
+    <property name="build.classes.dir" location="${build.dir}/classes"/>
+    <property name="build.pack.dir" location="${build.dir}/packaged"/>
+    <property name="target.dir" location="${basedir}/target"/>
+
+    <path id="build.classpath">
+        <fileset dir="lib" includes="*.jar"/>
+		<fileset dir="lib" includes="ModLoader.class"/>
+    </path>
+
+    <target name="init">
+        <mkdir dir="${build.dir}" />
+        <mkdir dir="${build.classes.dir}" />
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${target.dir}"/>
+        <delete file="${target.dir}/mcpc-1.4.5-${build.version}.jar"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac
+            srcdir="src"
+            destdir="${build.classes.dir}"
+            compiler="modern"
+			source="1.6"
+            target="1.6"
+            debug="off"
+			deprecation="off"
+            includeantruntime="false"
+            >
+			<classpath refid="build.classpath"/>
+            <compilerarg value="-Xlint:none"/>
+        </javac>
+    </target>
+
+    <target name="package" depends="compile">
+		<mkdir dir="${build.pack.dir}"/>
+		
+        <copy file="src/META-INF/MANIFEST.MF" tofile="${build.dir}/MANIFEST.MF"/>
+		
+		<unzip src="lib/craftbukkit-1.4.5-R0.3-SNAPSHOT.jar" dest="${build.pack.dir}">
+			<patternset>
+				<exclude name="**/META-INF/MANIFEST.MF"/>
+			</patternset>
+		</unzip>
+		
+		<copy todir="${build.pack.dir}/net/minecraft/server">
+			<fileset dir="lib/ModLoader.class"/>
+		</copy>
+		
+		<copy todir="${build.pack.dir}">
+			<fileset dir="src">
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${build.pack.dir}">
+  
+        <jar jarfile="${target.dir}/mcpc-1.4.5-${build.version}.jar" manifest="${build.dir}/MANIFEST.MF">
+			<fileset dir="${build.pack.dir}" />
+		</jar>
+		
+        <delete dir="${build.pack.dir}"/>
+    </target>
+
+    <target name="rebuild" depends="clean, compile"/>
+</project>
