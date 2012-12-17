@@ -9,7 +9,7 @@ import org.bukkit.craftbukkit.util.UnsafeList; // CraftBukkit
 public class PathfinderGoalSelector {
 
     // CraftBukkit start - ArrayList -> UnsafeList
-    private List a = new UnsafeList();
+    public List a = new UnsafeList();
     private List b = new UnsafeList();
     // CraftBukkit end
     private final MethodProfiler c;
